@@ -3,13 +3,13 @@ using UnityEngine.AI;
 
 public class Mover : MonoBehaviour
 {
-    [SerializeField] private Transform target;
     private NavMeshAgent _navMeshAgent;
+    private Animator _animator;
     
-    // Start is called before the first frame update
     void Start()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -17,8 +17,9 @@ public class Mover : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             MoveToCursor();
-
         }
+
+        UpdateAnimator();
     }
 
     private void MoveToCursor()
@@ -31,5 +32,13 @@ public class Mover : MonoBehaviour
             _navMeshAgent.destination = hit.point;
         }
         
+    }
+    
+    private void UpdateAnimator()
+    {
+        Vector3 velocity = _navMeshAgent.velocity;
+        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+        float speed = localVelocity.z;
+        _animator.SetFloat("forwardSpeed", speed);
     }
 }
