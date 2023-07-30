@@ -11,8 +11,9 @@ namespace RPG.Combat
         [SerializeField] private float weaponRange = 2f;
         private void Update()
         {
-            bool isInRange = Vector3.Distance(transform.position, target.position) < weaponRange;
-            if (target != null && !isInRange)
+            if(target == null) return;
+            
+            if (!GetIsRange())
             {
                 GetComponent<Mover>().MoveTo(target.position);
             }
@@ -22,11 +23,21 @@ namespace RPG.Combat
             }
         }
 
+        private bool GetIsRange()
+        {
+            return Vector3.Distance(transform.position, target.position) < weaponRange;
+        }
+
 
         public void Attack(CombatTarget combatTarget)
         {
             target = combatTarget.transform;
             print("Take that you short, squat peasant!");
+        }
+
+        public void Cancel()
+        {
+            target = null;
         }
     }
 }
