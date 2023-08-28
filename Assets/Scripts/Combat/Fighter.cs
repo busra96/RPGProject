@@ -1,10 +1,11 @@
 ﻿using System;
+using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour
+    public class Fighter : MonoBehaviour,IAction
     {
         public Transform target;
 
@@ -19,7 +20,7 @@ namespace RPG.Combat
             }
             else
             {
-                GetComponent<Mover>().Stop();
+                GetComponent<Mover>().Cancel();
             }
         }
 
@@ -28,9 +29,9 @@ namespace RPG.Combat
             return Vector3.Distance(transform.position, target.position) < weaponRange;
         }
 
-
         public void Attack(CombatTarget combatTarget)
         {
+            GetComponent<ActionScheduler>().StartAction(this);
             target = combatTarget.transform;
             print("Take that you short, squat peasant!");
         }
