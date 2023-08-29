@@ -21,7 +21,13 @@ namespace RPG.Combat
             else
             {
                 GetComponent<Mover>().Cancel();
+                AttackBehaviour();
             }
+        }
+
+        private void AttackBehaviour()
+        {
+            GetComponent<Animator>().SetTrigger("attack");
         }
 
         private bool GetIsRange()
@@ -31,14 +37,23 @@ namespace RPG.Combat
 
         public void Attack(CombatTarget combatTarget)
         {
+            
             GetComponent<ActionScheduler>().StartAction(this);
             target = combatTarget.transform;
             print("Take that you short, squat peasant!");
+           
         }
 
         public void Cancel()
         {
             target = null;
         }
+
+        //Animation Event
+        void Hit()
+        {
+            
+        }
+        
     }
 }
