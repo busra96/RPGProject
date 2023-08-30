@@ -1,5 +1,4 @@
-﻿using System;
-using RPG.Core;
+﻿using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ namespace RPG.Combat
 
         [SerializeField] private float weaponRange = 2f;
         [SerializeField] private float timeBetweenAttacks = 1f;
+        [SerializeField] private float weaponDamage = 5f;
         
         Transform target;
         private float timeSinceLastAttack = 0;
@@ -28,15 +28,24 @@ namespace RPG.Combat
             {
                 GetComponent<Mover>().Cancel();
                 AttackBehaviour();
-                
             }
         }
 
         private void AttackBehaviour()
         {
             if(timeSinceLastAttack < timeBetweenAttacks) return;
+            //this will trigger the Hit() event
             timeSinceLastAttack = 0;
             GetComponent<Animator>().SetTrigger("attack");
+            
+            
+        }
+        
+        //Animation Event
+        void Hit()
+        {
+            Health healthComponent = target.GetComponent<Health>();
+            healthComponent.TakeDamage(weaponDamage);
         }
 
         private bool GetIsRange()
@@ -58,11 +67,7 @@ namespace RPG.Combat
             target = null;
         }
 
-        //Animation Event
-        void Hit()
-        {
-            
-        }
+        
         
     }
 }
