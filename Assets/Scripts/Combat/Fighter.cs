@@ -34,12 +34,11 @@ namespace RPG.Combat
 
         private void AttackBehaviour()
         {
+            transform.LookAt(target.transform);
             if(timeSinceLastAttack < timeBetweenAttacks) return;
             //this will trigger the Hit() event
             timeSinceLastAttack = 0;
             GetComponent<Animator>().SetTrigger("attack");
-            
-            
         }
         
         //Animation Event
@@ -53,11 +52,19 @@ namespace RPG.Combat
             return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
         }
 
+        public bool CanAttack(CombatTarget combatTarget)
+        {
+            if (combatTarget == null) return false;
+            Health targetToTest = combatTarget.GetComponent<Health>();
+            return targetToTest != null && !targetToTest.IsDead();
+        }
+
         public void Attack(CombatTarget combatTarget)
         {
             
             GetComponent<ActionScheduler>().StartAction(this);
             target = combatTarget.GetComponent<Health>();
+           
             print("Take that you short, squat peasant!");
            
         }
