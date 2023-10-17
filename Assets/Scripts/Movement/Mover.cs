@@ -1,5 +1,4 @@
-﻿using RPG.Combat;
-using RPG.Core;
+﻿using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,20 +7,19 @@ namespace RPG.Movement
     public class Mover : MonoBehaviour,IAction
     {
         private NavMeshAgent _navMeshAgent;
+        private Health _health;
         private Animator _animator;
 
         void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _health = GetComponent<Health>();
             _animator = GetComponent<Animator>();
         }
 
         void Update()
         {
-            // if (Input.GetMouseButton(0))
-            // {
-            //     MoveToCursor();
-            // }
+            _navMeshAgent.enabled = !_health.IsDead();
 
             UpdateAnimator();
         }
