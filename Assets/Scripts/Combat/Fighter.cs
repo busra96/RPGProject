@@ -35,10 +35,12 @@ namespace RPG.Combat
         private void AttackBehaviour()
         {
             transform.LookAt(target.transform);
-            if(timeSinceLastAttack < timeBetweenAttacks) return;
-            //this will trigger the Hit() event
-            TriggerAttack();
-            timeSinceLastAttack = 0;
+            if (timeSinceLastAttack > timeBetweenAttacks)
+            {
+                //this will trigger the Hit() event
+                TriggerAttack();
+                timeSinceLastAttack = 0;
+            }
         }
 
         private void TriggerAttack()
@@ -70,8 +72,6 @@ namespace RPG.Combat
         {
             GetComponent<ActionScheduler>().StartAction(this);
             target = combatTarget.GetComponent<Health>();
-           
-            print("Take that you short, squat peasant!");
            
         }
 
